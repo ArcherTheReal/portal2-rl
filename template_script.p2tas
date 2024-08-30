@@ -1,0 +1,5 @@
+version 7
+start now
+
+10>>setang {} {}
+20>>strafe {}deg
