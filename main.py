@@ -13,7 +13,9 @@ def measure_fn(game: server.TasClient, script):
     # Implement the logic to run the game with the parameters and return a score (reward).
     game.receive()
     game.start_content_playback(script)
+    game.fast_forward(1000)
     game.receive_until(RecvMessageType.PROCESSED_SCRIPT)
+    game.fast_forward(0,False)
     game.entity_info()
     info: List[server.EntityInfo] = game.receive_until(RecvMessageType.ENTITY_INFO)
     print(info[0])

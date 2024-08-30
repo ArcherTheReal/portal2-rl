@@ -121,7 +121,6 @@ class PPO:
         for episode in range(max_episodes):
             if (episode+1) % 10 == 0:
                 self.env.render()
-            print(self.env.list_clients())
 
             state = self.env.reset()  # Start a new episode
 
@@ -152,15 +151,12 @@ class Environment(Env):
 
         self.param_ranges = param_ranges
         self.action_space = Box(low=param_ranges[:, 0], high=param_ranges[:, 1], dtype=np.float32)
-        print(f"Action space: {self.action_space}")
         self.observation_space = Box(low=param_ranges[:, 0], high=param_ranges[:, 1], dtype=np.float32)
         self.state = np.random.uniform(param_ranges[:, 0], param_ranges[:, 1])
-        print(self.state)
         self.client = client_pool
         self.result_buffer = {}
     
     def step(self, action):
-        print(f"Taking action: {action}")
         self.state = np.clip(action, self.param_ranges[:, 0], self.param_ranges[:, 1])
         
         rollout_id = str(uuid.uuid4())  # Generate a unique ID for this rollout
@@ -185,7 +181,6 @@ class Environment(Env):
                 
 
         # Get the results for the current rollout
-        print(f"Results received: {self.result_buffer}")
         if rollout_id in self.result_buffer:
             reward = self.result_buffer[rollout_id][1]
             self.result_buffer.pop(rollout_id)
